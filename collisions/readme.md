@@ -1,3 +1,22 @@
+# Getting started on Windows
+
+Install
+
+- Node (https://nodejs.org/en/download/)
+- Yarn (https://classic.yarnpkg.com/lang/en/docs/install/#windows-stable)
+
+Open power shell in admin and run:
+
+```
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+## Project setup
+
+```
+yarn
+```
+
 General learnings:
 
 - Arrays
