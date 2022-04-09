@@ -2,7 +2,7 @@ const path = require('path');
 const extract = require("mini-css-extract-plugin");
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.tsx',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
@@ -11,7 +11,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         exclude: /(node_modules)/,
         use: {
           loader: 'ts-loader',
