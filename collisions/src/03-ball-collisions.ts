@@ -4,19 +4,8 @@ import { random } from "lodash";
 const width = 400;
 const height = 400;
 
-const collide = (posA: P5.Vector, posB: P5.Vector, velocity: P5.Vector) => {
-  // const angle = posA.sub(posB).heading();
-  const angle = posA.angleBetween(posB);
-  console.log(angle);
-
-  const globalVelocity = velocity.rotate(-angle);
-  globalVelocity.y = -globalVelocity.y;
-  return globalVelocity.rotate(angle).normalize();
-};
-
 class Ball {
   public pos: P5.Vector;
-  public nextPos: P5.Vector;
   public r: number;
   public velocity: P5.Vector;
 
@@ -25,39 +14,38 @@ class Ball {
     this.pos = new P5.Vector(x, y);
     this.velocity = new P5.Vector(Math.random(), Math.random(), 0);
     this.velocity.normalize();
-    this.nextPos = this.nextMove();
   }
 
-  willCollide(other: Ball) {
-    return this.nextPos.dist(other.nextPos) < this.r + other.r;
+  hasCollided(other: Ball) {
+    return this.pos.dist(other.pos) < this.r + other.r;
   }
 
-  nextMove() {
-    return this.pos.add(this.velocity);
-  }
-
-  tick(balls: Ball[]) {
+  think(balls: Ball[]) {
     // have we hit another ball?
     balls.forEach((b: Ball) => {
-      if (this.willCollide(b)) {
-        this.velocity = collide(this.nextPos, b.nextPos, this.velocity);
+      if (this.hasCollided(b)) {
+        this.velocity.x = -this.velocity.x;
+        this.velocity.y = -this.velocity.y;
       }
     });
 
     // have we hit a wall?
-    if (this.nextPos.x < this.r || this.nextPos.x > width - this.r) {
+    if (
+      this.pos.x + this.velocity.x < this.r ||
+      this.pos.x + this.velocity.x > width - this.r
+    ) {
       this.velocity.x = -this.velocity.x;
     }
-    if (this.nextPos.y < this.r || this.nextPos.y > height - this.r) {
+    if (
+      this.pos.y + this.velocity.y < this.r ||
+      this.pos.y + this.velocity.y > height - this.r
+    ) {
       this.velocity.y = -this.velocity.y;
     }
-  }
 
-  move() {
     // update the position
-    this.pos = this.nextMove();
-    // predict the next movement
-    this.nextPos = this.nextMove();
+    this.pos.x += this.velocity.x;
+    this.pos.y += this.velocity.y;
   }
 
   draw(p5: P5) {
@@ -71,8 +59,8 @@ const sketch = (p5: P5) => {
   p5.setup = () => {
     const canvas = p5.createCanvas(width, height);
     canvas.parent("app");
-    for (let i = 0; i < 2; i++) {
-      const size = 100;
+    for (let i = 0; i < 5; i++) {
+      const size = 50;
       balls.push(
         new Ball(
           size,
@@ -86,11 +74,7 @@ const sketch = (p5: P5) => {
   p5.draw = () => {
     p5.background("blue");
     p5.fill("red");
-    // predict changes
-    balls.forEach((ball) => ball.tick(balls.filter((b) => b !== ball)));
-    // apply changes
-    balls.forEach((ball) => ball.move());
-    // render
+    balls.forEach((ball) => ball.think(balls.filter((b) => b !== ball)));
     balls.forEach((ball) => ball.draw(p5));
   };
 };
