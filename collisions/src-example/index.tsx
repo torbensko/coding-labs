@@ -29,6 +29,14 @@ const sketch = (p5: P5) => {
     // render
     balls.forEach((ball) => ball.draw(p5));
   };
+
+  p5.keyTyped = () => {
+    if (p5.key === "a") {
+      balls.push(createBall());
+    } else if (p5.key === "r") {
+      balls.pop();
+    }
+  };
 };
 
 new P5(sketch);
