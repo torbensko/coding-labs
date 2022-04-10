@@ -28,7 +28,7 @@ export class Ball {
     // have we hit another ball?
     balls.forEach((b: Ball) => {
       if (this.willCollide(b)) {
-        this.velocity = collide(this.nextPos, b.nextPos, this.velocity);
+        this.velocity = this.velocity.rotate(1.570790282);
       }
     });
 

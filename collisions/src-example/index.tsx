@@ -34,9 +34,10 @@ const sketch = (p5: P5) => {
 new P5(sketch);
 
 const MyApp: React.FC = () => {
+  const onCreate = () => balls.push(createBall());
   return (
     <div>
-      <Button onClick={createBall}>Add ball</Button>
+      <Button onClick={onCreate}>Add ball</Button>
     </div>
   );
 };
