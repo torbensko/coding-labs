@@ -7,12 +7,16 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js'
   },
-
+  resolve: {
+    extensions: [".js", ".jsx", ".ts", ".tsx", ".scss", ".css"],
+    modules: ['src', 'node_modules']
+  },
+  target: "web",
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        exclude: /(node_modules)/,
+        // exclude: /(node_modules)/,
         use: {
           loader: 'ts-loader',
         }
