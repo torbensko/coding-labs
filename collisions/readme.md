@@ -11,6 +11,10 @@ Open power shell in admin and run:
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
+## Reference
+
+- https://p5js.org/reference/
+
 ## Project setup
 
 ```
